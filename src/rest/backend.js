@@ -1,4 +1,4 @@
-import request from 'request';
+import { simpleGet, simplePost, simplePatch } from './restApiAccess';
 
 const URL = () => "http://zssn-backend-example.herokuapp.com";
 
@@ -14,50 +14,6 @@ const getNonInfectedURL = () => URL().concat("/api/report/non_infected.json");
 const getInventoryURL = () => URL().concat("/api/report/people_inventory.json");
 const getInfectedPoints = () => URL().concat("/api/report/infected_points.json");
 const getAvailableReports = () => URL().concat("/api/report.json");
-
-export const simpleGet = (url, callback) => {
-    request(
-        url, 
-        (err, response, body) => {
-            if(err){
-                console.log(err);
-                return;
-            }
-            callback(body);
-        });
-};
-
-export const simplePost = (url, data, callback) => {
-    request.post(
-        {
-            url: url, 
-            form:{...data}
-        },
-        (err, response, body)=>{
-            if(err){
-                console.log(err);
-                return;
-            }
-            callback(body);
-        }
-    );
-};
-
-export const simplePatch = (url, data, callback) => {
-    request.patch(
-        {
-            url: url, 
-            form:{...data}
-        },
-        (err, response, body)=>{
-            if(err){
-                console.log(err);
-                return;
-            }
-            callback(body);
-        }
-    );
-};
 
 const wrapCallback = (callback) => {
     return (response) => callback(JSON.parse(response));
