@@ -15,7 +15,7 @@ const getInventoryURL = () => URL().concat("/api/report/people_inventory.json");
 const getInfectedPoints = () => URL().concat("/api/report/infected_points.json");
 const getAvailableReports = () => URL().concat("/api/report.json");
 
-const simpleGet = (url, callback) => {
+export const simpleGet = (url, callback) => {
     request(
         url, 
         (err, response, body) => {
@@ -23,11 +23,11 @@ const simpleGet = (url, callback) => {
                 console.log(err);
                 return;
             }
-            callback(JSON.parse(body));
+            callback(body);
         });
 };
 
-const simplePost = (url, data, callback) => {
+export const simplePost = (url, data, callback) => {
     request.post(
         {
             url: url, 
@@ -43,7 +43,7 @@ const simplePost = (url, data, callback) => {
     );
 };
 
-const simplePatch = (url, data, callback) => {
+export const simplePatch = (url, data, callback) => {
     request.patch(
         {
             url: url, 
@@ -59,6 +59,10 @@ const simplePatch = (url, data, callback) => {
     );
 };
 
+const wrapCallback = (callback) => {
+    return (response) => callback(JSON.parse(response));
+};
+
 export const trade = (data, callback) => {
     const {id, ...rest} = data;
     simplePost(
@@ -71,14 +75,14 @@ export const trade = (data, callback) => {
 export const getPersonProperties = (id, callback) => {
     simpleGet(
         propertiesURL(id),
-        callback
+        wrapCallback(callback)
     );
 };
 
 export const getAllPeople = (callback) => {
     simpleGet(
         personURL(),
-        callback
+        wrapCallback(callback)
     );
 };
 
@@ -101,7 +105,7 @@ export const reportInfected = (data, callback) => {
 export const getSinglePerson = (id, callback) => {
     simpleGet(
         personIdURL(id),
-        callback
+        wrapCallback(callback)
     );
 };
 
@@ -115,20 +119,21 @@ export const updatePerson = (person, callback) => {
 };
 
 export const getReport = (reportName, callback) => {
+    const wrappedCallback = wrapCallback(callback);
     switch(reportName){
         case 'infected':
-            simpleGet(getInfectedURL(), callback);
+            simpleGet(getInfectedURL(), wrappedCallback);
             break;
         case 'non infected':
-            simpleGet(getNonInfectedURL(), callback);
+            simpleGet(getNonInfectedURL(), wrappedCallback);
             break;
         case 'inventory':
-            simpleGet(getInventoryURL(), callback);
+            simpleGet(getInventoryURL(), wrappedCallback);
             break;
         case 'lost points':
-            simpleGet(getInfectedPoints(), callback);
+            simpleGet(getInfectedPoints(), wrappedCallback);
             break;
         default:
-            simpleGet(getAvailableReports(), callback);
+            simpleGet(getAvailableReports(), wrappedCallback);
     }
 };
