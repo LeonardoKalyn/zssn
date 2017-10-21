@@ -1,5 +1,5 @@
 import React from 'react';
-import { updatePerson } from './rest/backend';
+import { updatePerson } from './rest/access';
 
 class UpdateForm extends React.Component {
     constructor(props) {

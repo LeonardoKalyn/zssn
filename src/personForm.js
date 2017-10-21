@@ -1,5 +1,5 @@
 import React from 'react';
-import { postNewPerson } from './rest/backend';
+import { postNewPerson } from './rest/access';
 
 class PersonForm extends React.Component {
     constructor(props) {

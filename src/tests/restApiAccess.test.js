@@ -2,15 +2,15 @@ import {expect} from 'chai';
 import nock from 'nock';
 import { simpleGet, simplePost, simplePatch } from './../rest/restApiAccess';
 
-const URL = "http://zssn-backend-example.herokuapp.com";
+const URL = "http://testingurl.com";
 
 const responseTest = (dataText) => {
-    return (responseText) => {
-        const response = JSON.parse(responseText);
-        expect(response).to.be.ok;
-        expect(response).to.have.property("text");
+    return (response, body) => {
+        const data = JSON.parse(body);
+        expect(data).to.be.ok;
+        expect(data).to.have.property("text");
         
-        const {text} = response;
+        const {text} = data;
         expect(text).to.be.ok;
         expect(text).to.be.a('string');
         expect(text).to.eql(dataText);
@@ -18,10 +18,10 @@ const responseTest = (dataText) => {
 };
 
 describe('Connection simpleGet test', () => {
-    const path = '/api/people.json';
+    const path = '/getpath';
     const dataText = 'Successfull GET';
     beforeEach(() => {
-        nock(URL)
+        nock(URL, {allowUnmocked: true})
             .get(path)
             .reply(
                 200, 
@@ -37,10 +37,10 @@ describe('Connection simpleGet test', () => {
 });
 
 describe('Connection simplePost test', () => {
-    const path = "/api/people/id/report_infection.json";
+    const path = "/postpath";
     const dataText = "Successfull POST";
     beforeEach(() => {
-        nock(URL)
+        nock(URL, {allowUnmocked: true})
             .post(
                 path,
                 {text: dataText}
@@ -60,10 +60,10 @@ describe('Connection simplePost test', () => {
 });
 
 describe('Connection simplePatch test', () => {
-    const path = "/api/people/id.json";
+    const path = "/patchpath";
     const dataText = "Successfull PATCH";
     beforeEach(() => {
-        nock(URL)
+        nock(URL, {allowUnmocked: true})
             .intercept(
                 path,
                 'PATCH',

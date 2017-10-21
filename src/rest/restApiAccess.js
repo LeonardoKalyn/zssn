@@ -4,11 +4,11 @@ export const simpleGet = (url, callback) => {
     request(
         url, 
         (err, response, body) => {
-            if(err){
+            if(err && (process.env.NODE_ENV !== 'production')){
                 console.log(err);
-                return;
             }
-            callback(body);
+            if(callback && !err)
+                callback(response, body);
         });
 };
 
@@ -19,11 +19,11 @@ export const simplePost = (url, data, callback) => {
             form:{...data}
         },
         (err, response, body)=>{
-            if(err){
+            if(err && (process.env.NODE_ENV !== 'production')){
                 console.log(err);
-                return;
             }
-            callback(body);
+            if(callback)
+                callback(response, body);
         }
     );
 };
@@ -35,11 +35,11 @@ export const simplePatch = (url, data, callback) => {
             form:{...data}
         },
         (err, response, body)=>{
-            if(err){
+            if(err && (process.env.NODE_ENV !== 'production')){
                 console.log(err);
-                return;
             }
-            callback(body);
+            if(callback)
+                callback(response, body);
         }
     );
 };

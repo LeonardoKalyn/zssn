@@ -1,5 +1,5 @@
 import React from 'react';
-import { reportInfected } from './rest/backend';
+import { reportInfected } from './rest/access';
 
 class ReportForm extends React.Component {
     constructor(props) {

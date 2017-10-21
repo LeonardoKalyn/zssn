@@ -1,5 +1,5 @@
 import React from 'react';
-import { getSinglePerson } from './rest/backend';
+import { getSinglePerson } from './rest/access';
 
 class SinglePersonForm extends React.Component {
     constructor(props) {

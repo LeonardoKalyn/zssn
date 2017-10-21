@@ -1,5 +1,5 @@
 import React from "react";
-import {getReport} from './rest/backend';
+import {getReport} from './rest/access';
 
 class GetReportForm extends React.Component {
     constructor(props) {

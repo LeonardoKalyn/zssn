@@ -1,5 +1,5 @@
 import React from 'react';
-import { getAllPeople } from './rest/backend';
+import { getAllPeople } from './rest/access';
 import PersonForm from './personForm';
 import ReportForm from './reportForm';
 import SinglePersonForm from './getPersonForm';

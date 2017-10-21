@@ -12,11 +12,11 @@ const personIdURL = (id) => URL().concat("/api/people/", id, ".json");
 const getInfectedURL = () => URL().concat("/api/report/infected.json");
 const getNonInfectedURL = () => URL().concat("/api/report/non_infected.json");
 const getInventoryURL = () => URL().concat("/api/report/people_inventory.json");
-const getInfectedPoints = () => URL().concat("/api/report/infected_points.json");
-const getAvailableReports = () => URL().concat("/api/report.json");
+const getInfectedPointsURL = () => URL().concat("/api/report/infected_points.json");
+const getAvailableReportsURL = () => URL().concat("/api/report.json");
 
 const wrapCallback = (callback) => {
-    return (response) => callback(JSON.parse(response));
+    return (response, body) => callback(response, JSON.parse(body));
 };
 
 export const trade = (data, callback) => {
@@ -87,9 +87,9 @@ export const getReport = (reportName, callback) => {
             simpleGet(getInventoryURL(), wrappedCallback);
             break;
         case 'lost points':
-            simpleGet(getInfectedPoints(), wrappedCallback);
+            simpleGet(getInfectedPointsURL(), wrappedCallback);
             break;
         default:
-            simpleGet(getAvailableReports(), wrappedCallback);
+            simpleGet(getAvailableReportsURL(), wrappedCallback);
     }
 };
