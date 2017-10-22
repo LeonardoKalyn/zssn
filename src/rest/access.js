@@ -1,19 +1,5 @@
 import { simpleGet, simplePost, simplePatch } from './restApiAccess';
-
-const URL = () => "http://zssn-backend-example.herokuapp.com";
-
-const tradeURL = (id) => URL().concat("/api/people/", id, "/properties/trade_item.json");
-const propertiesURL = (id) => URL().concat("/api/people/", id,"/properties.json");
-
-const personURL = () => URL().concat("/api/people.json");
-const infectedURL = (id) => URL().concat("/api/people/", id, "/report_infection.json");
-const personIdURL = (id) => URL().concat("/api/people/", id, ".json");
-
-const getInfectedURL = () => URL().concat("/api/report/infected.json");
-const getNonInfectedURL = () => URL().concat("/api/report/non_infected.json");
-const getInventoryURL = () => URL().concat("/api/report/people_inventory.json");
-const getInfectedPointsURL = () => URL().concat("/api/report/infected_points.json");
-const getAvailableReportsURL = () => URL().concat("/api/report.json");
+import * as URL from './url';
 
 const wrapCallback = (callback) => {
     return (response, body) => callback(response, JSON.parse(body));
@@ -22,7 +8,7 @@ const wrapCallback = (callback) => {
 export const trade = (data, callback) => {
     const {id, ...rest} = data;
     simplePost(
-        tradeURL(id),
+        URL.tradeURL(id),
         rest,
         callback
     );
@@ -30,21 +16,21 @@ export const trade = (data, callback) => {
 
 export const getPersonProperties = (id, callback) => {
     simpleGet(
-        propertiesURL(id),
+        URL.propertiesURL(id),
         wrapCallback(callback)
     );
 };
 
 export const getAllPeople = (callback) => {
     simpleGet(
-        personURL(),
+        URL.personURL(),
         wrapCallback(callback)
     );
 };
 
 export const postNewPerson = (newPerson, callback) => {
     simplePost(
-        personURL(),
+        URL.personURL(),
         newPerson,
         callback
     );
@@ -52,7 +38,7 @@ export const postNewPerson = (newPerson, callback) => {
 
 export const reportInfected = (data, callback) => {
     simplePost(
-        infectedURL(data.id),
+        URL.infectedURL(data.id),
         {infected: data.infected},
         callback
     );
@@ -60,7 +46,7 @@ export const reportInfected = (data, callback) => {
 
 export const getSinglePerson = (id, callback) => {
     simpleGet(
-        personIdURL(id),
+        URL.personIdURL(id),
         wrapCallback(callback)
     );
 };
@@ -68,7 +54,7 @@ export const getSinglePerson = (id, callback) => {
 export const updatePerson = (person, callback) => {
     const {id, ...rest} = person;
     simplePatch(
-        personIdURL(id),
+        URL.personIdURL(id),
         rest,
         callback
     );
@@ -78,18 +64,18 @@ export const getReport = (reportName, callback) => {
     const wrappedCallback = wrapCallback(callback);
     switch(reportName){
         case 'infected':
-            simpleGet(getInfectedURL(), wrappedCallback);
+            simpleGet(URL.getInfectedURL(), wrappedCallback);
             break;
         case 'non infected':
-            simpleGet(getNonInfectedURL(), wrappedCallback);
+            simpleGet(URL.getNonInfectedURL(), wrappedCallback);
             break;
         case 'inventory':
-            simpleGet(getInventoryURL(), wrappedCallback);
+            simpleGet(URL.getInventoryURL(), wrappedCallback);
             break;
         case 'lost points':
-            simpleGet(getInfectedPointsURL(), wrappedCallback);
+            simpleGet(URL.getInfectedPointsURL(), wrappedCallback);
             break;
         default:
-            simpleGet(getAvailableReportsURL(), wrappedCallback);
+            simpleGet(URL.getAvailableReportsURL(), wrappedCallback);
     }
 };
