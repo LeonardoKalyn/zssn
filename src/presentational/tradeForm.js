@@ -1,5 +1,5 @@
 import React from 'react';
-import { trade } from './rest/access';
+import { trade } from './../rest/access';
 
 class TradeForm extends React.Component {
     constructor(props) {

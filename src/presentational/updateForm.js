@@ -1,17 +1,17 @@
 import React from 'react';
-import { postNewPerson } from './rest/access';
+import { updatePerson } from './../rest/access';
 
-class PersonForm extends React.Component {
+class UpdateForm extends React.Component {
     constructor(props) {
     super(props);
         this.state = {
+            id: '94710ac3-ac65-418b-8d61-a92c9d1096cb',
             person: {
                 name: 'Kalyn',
                 age: 21,
                 gender: 'M',
                 lonlat: '',
             },
-            items: 'Water:1',
         };
         
         this.handleChange = this.handleChange.bind(this);
@@ -32,24 +32,28 @@ class PersonForm extends React.Component {
                     }
                 });
                 break;
-            case 'items':
+            case 'id':
                 this.setState({
                     ...this.state,
                     [event.target.name]: event.target.value
                 });
                 break;
             default:
-                console.log("Unknow target:" + event.target.name);
+                console.log('Unknow target: ' + event.target.name);
       }
-    
     }
     
     handleSubmit() {
-        postNewPerson(this.state, console.log);
+        updatePerson(this.state, console.log);
     }
     render() {
         return (
             <div>
+                <label>
+                    My Id:
+                    <input type="text" name="id" value={this.state.id} onChange={this.handleChange} />
+                </label>
+                <br/>
                 <label>
                     Name:
                     <input type="text" name="name" value={this.state.person.name} onChange={this.handleChange} />
@@ -70,15 +74,10 @@ class PersonForm extends React.Component {
                     <input type="text" name="lonlat" value={this.state.person.lonlat} onChange={this.handleChange} />
                 </label>
                 <br/>
-                <label>
-                    Items:
-                    <input type="text" name="items" value={this.state.items} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <button onClick={this.handleSubmit}>Save</button>
+                <button onClick={this.handleSubmit}>Update</button>
             </div>
         );
     }
 }
 
-export default PersonForm;
+export default UpdateForm;
