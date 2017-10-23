@@ -28,14 +28,6 @@ export const getAllPeople = (callback) => {
     );
 };
 
-export const postNewPerson = (newPerson, callback) => {
-    simplePost(
-        URL.personURL(),
-        newPerson,
-        callback
-    );
-};
-
 export const reportInfected = (data, callback) => {
     simplePost(
         URL.infectedURL(data.id),

@@ -12,13 +12,13 @@ const ResourceField = ({
     return (
         <FormGroup
             validationState={validationHandler(id)}
+            controlId={id}
         >
             <InputGroup>
                 <InputGroup.Addon>
                     <Glyphicon glyph={glyph} />
                 </InputGroup.Addon>
                 <FormControl
-                    id={id}
                     type={type}
                     placeholder={text}
                     onChange={ changeHandler }

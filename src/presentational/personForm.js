@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, FormGroup, ControlLabel, Button, Radio, HelpBlock } from 'react-bootstrap';
-import CollapsablePanel from './../container/collapsablePanelContainer';
+import CollapsablePanel from './../selfcontained/collapsablePanel';
 import StandardFormField from './standardFormField';
 import ResourceField from './standardResourceField';
 
@@ -32,13 +32,13 @@ const PersonForm = (onChangeValue, onSaveClickt, handleValidation) => {
             />
             
             <FormGroup
+                controlId="gender"
                 validationState={handleValidation.genderValidation()}
             >
                 <ControlLabel>Gender</ControlLabel>
                 <FormGroup>
                     <Radio 
                         id="gender"
-                        name="radioGroup"
                         inline
                         value="M"
                         onClick={onChangeValue}
@@ -50,7 +50,6 @@ const PersonForm = (onChangeValue, onSaveClickt, handleValidation) => {
                     
                     <Radio
                         id="gender"
-                        name="radioGroup"
                         inline
                         value="F"
                         onClick={onChangeValue}

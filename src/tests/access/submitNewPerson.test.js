@@ -1,12 +1,12 @@
 import {expect} from 'chai';
 import {v4} from 'uuid';
-import { postNewPerson } from './../../rest/access';
+import submitNewPerson from './../../rest/submitNewPerson';
 
 describe('API postNewPerson request test', () => {
     
     it('Performs a valid postNewPerson', () => {
         const name = v4().concat('newPerson');
-        return  postNewPerson(
+        return  submitNewPerson(
             {
                 person: {
                     name: name,
@@ -16,9 +16,8 @@ describe('API postNewPerson request test', () => {
                 },
                 items: 'Ammunition:0',
             },
-            (response, body) => {
-                body = JSON.parse(body);
-                expect(response.statusCode).to.eql(201);
+            (successful, body) => {
+                expect(successful).to.eql(true);
                 expect(body).to.have.property('id');
                 expect(body).to.have.property('name');
                 expect(body.name).to.be.eql(name);
