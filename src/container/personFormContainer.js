@@ -2,6 +2,7 @@ import React from 'react';
 import submitNewPerson from './../rest/submitNewPerson';
 import PersonForm from './../presentational/personForm';
 import {withRouter} from 'react-router';
+import * as validationLogic from './personValidationLogic';
 
 class PersonFormContainer extends React.Component {
     constructor(props) {
@@ -22,12 +23,6 @@ class PersonFormContainer extends React.Component {
         };
         
         this.handleChange = this.handleChange.bind(this);
-        
-        this.validationLogic.name = this.validationLogic.name.bind(this);
-        this.validationLogic.age = this.validationLogic.age.bind(this);
-        this.validationLogic.gender = this.validationLogic.gender.bind(this);
-        this.validationLogic.location = this.validationLogic.location.bind(this);
-        this.validationLogic.resource = this.validationLogic.resource.bind(this);
         
         this.formValidation = this.formValidation.bind(this);
         
@@ -75,82 +70,58 @@ class PersonFormContainer extends React.Component {
         }
     }
     
-    validationLogic = {
-        
-        numberValidation: (number) => {
-            const numberString = number.toString();
-            
-            return (
-                (number>=0) &&
-                (numberString !== '') &&
-                (/^\d+$/.test(numberString)) //Only contain numbers
-            );
-        },
-        
-        name: () => this.state.person.name !== '',
-        
-        age: () => this.validationLogic.numberValidation(this.state.person.age),
-        
-        gender: () => {
-            const gender = this.state.person.gender;
-            return (gender === 'M') || (gender === 'F');
-        },
-        
-        location: () => (
-            (this.state.person.lonlat === '') || 
-            (/^-?\d+\.?\d+,-?\d+\.?\d+$/.test(this.state.person.lonlat)) // On format 'latitude,longitude'
-        ),
-        
-        resource: (resourceName) => 
-            this.validationLogic.numberValidation(this.state.items[resourceName]),
-        
-    }
-    
     handleValidationState = {
         nameValidation: () =>
-            this.validationLogic.name() ? 'success' : 'error',
+            validationLogic.validateName(this.state.person.name) ?
+                'success' : 'error',
         
         ageValidation:() =>
-            this.validationLogic.age() ? 'success' : 'error',
+            validationLogic.validateNumber(this.state.person.age) ?
+                'success' : 'error',
         
         genderValidation: () =>
-            this.validationLogic.gender() ? 'success' : 'error',
+            validationLogic.validateGender(this.state.person.gender) ?
+                'success' : 'error',
         
         locationValidation: () => {
-            if(this.state.person.lonlat === '')
+            const {location} = this.state.person.lonlat;
+            if(location  === '')
                 return null;
             else 
-                return this.validationLogic.location() ? 'success' : 'error';
+                return validationLogic.validateLocation(location) ?
+                    'success' : 'error';
         },
         
         resourceValidation: (resourceName) => {
-            if(this.state.items[resourceName] === 0)
+            const resource = this.state.items[resourceName];
+            if(resource === 0)
                 return null;
             else 
-                return this.validationLogic.resource(resourceName) ? 'success' : 'error';
+                return validationLogic.validateNumber(resource) ? 
+                'success' : 'error';
         },
     }
     
     formValidation = () =>{
-        if(!this.validationLogic.name()){
+        if(!validationLogic.validateName(this.state.person.name)){
             window.alert('Name is required!');
             document.getElementById("name").focus();
             return false;
         }
             
-        if(!this.validationLogic.age()){
+        if(!validationLogic.validateNumber(this.state.person.age)){
             window.alert('A valid age is required!');
             document.getElementById("age").focus();
             return false;
         }
             
-        if(!this.validationLogic.gender()){
+        if(!validationLogic.validateGender(this.state.person.gender)){
             window.alert('Gender is required!');
             document.getElementById("gender").focus();
             return false;
         }
             
-        if(!this.validationLogic.location()){
+        if(!validationLogic.validateLocation(this.state.person.lonlat)){
             window.alert(
                 'Invalid form of location!\n' +
                 'The location should be your current coordinates: "longitude,latitude".' + 
@@ -159,25 +130,25 @@ class PersonFormContainer extends React.Component {
             return false;
         }
             
-        if(!this.validationLogic.resource('Water')){
+        if(!validationLogic.validateNumber(this.state.items.Water)){
             window.alert('Your Water resource is invalid');
             document.getElementById('Water').focus();
             return false;
         }
         
-        if(!this.validationLogic.resource('Food')){
+        if(!validationLogic.validateNumber(this.state.items.Food)){
             window.alert('Your Food resourcer is invalid!');
             document.getElementById('Food').focus();
             return false;
         }
         
-        if(!this.validationLogic.resource('Medication')){
+        if(!validationLogic.validateNumber(this.state.items.Medication)){
             window.alert('Medication is invalid!');
             document.getElementById("Medication").focus();
             return false;
         }
             
-        if(!this.validationLogic.resource('Ammunition')){
+        if(!validationLogic.validateNumber(this.state.items.Ammunition)){
             window.alert('Your Ammunition resource is invalid');
             document.getElementById('Ammunition').focus();
             return false;
