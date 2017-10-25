@@ -6,18 +6,15 @@ const Menu = () => {
     return (
         <Navbar inverse fluid  collapseOnSelect>
             <Navbar.Header>
-                <Nav>
-                    <NavItem>
-                        <LinkContainer to="/">
-                            <Navbar.Brand>
-                                ZSSN
-                            </Navbar.Brand>
-                        </LinkContainer>
-                        <Navbar.Toggle />
-                    </NavItem>
-                </Nav>
+                <LinkContainer to="/">
+                    <div>
+                    <Navbar.Brand>
+                        ZSSN
+                    </Navbar.Brand>
+                </div>
+                </LinkContainer>
+                <Navbar.Toggle />
             </Navbar.Header>
-    
             <Navbar.Collapse>
                 <Nav>
                     <LinkContainer to="/signup">

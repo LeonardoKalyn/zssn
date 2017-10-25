@@ -53,8 +53,8 @@ class InfectionChartContainer extends React.Component {
         }
         return (
             <InfectionChart 
-                infected={this.state.infected}
-                healthy={this.state.healthy}
+                infected={this.state.infected.toFixed(2)}
+                healthy={this.state.healthy.toFixed(2)}
             />
         );
     }

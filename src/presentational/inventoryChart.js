@@ -11,7 +11,8 @@ class InfectionChart extends React.Component {
             data: {
                 labels: ['General', 'Per surviver'],
                 datasets: [{
-                    data: [inventory.perPerson, inventory.perHelthyPerson],
+                    data: [inventory.perPerson.toFixed(2),
+                        inventory.perHelthyPerson.toFixed(2)],
                     backgroundColor: [
                         'hsla(36, 100%, 50%, 0.65)',
                         'hsla(216, 100%, 50%, 0.65)'
@@ -35,7 +36,7 @@ class InfectionChart extends React.Component {
     
     render () {
         return (
-            <canvas id="inventoryChart" width="400" height="400"></canvas>
+            <canvas id="inventoryChart" width="300" height="300"></canvas>
         );
     }
 }
