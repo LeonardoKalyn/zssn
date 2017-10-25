@@ -1,83 +1,96 @@
 import React from 'react';
-import { updatePerson } from './../rest/access';
+import { FormGroup, FormControl, ControlLabel, Button, Glyphicon, InputGroup } from 'react-bootstrap';
+import CollapsablePanel from './../selfcontained/collapsablePanel';
+import StandardFormField from './standardFormField';
+import GenderRadio from './standardGenderRadio';
+import MapPickerModal from './../container/mapPickerContainer';
 
-class UpdateForm extends React.Component {
-    constructor(props) {
-    super(props);
-        this.state = {
-            id: '94710ac3-ac65-418b-8d61-a92c9d1096cb',
-            person: {
-                name: 'Kalyn',
-                age: 21,
-                gender: 'M',
-                lonlat: '',
-            },
-        };
-        
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleChange(event) {
-        switch (event.target.name) {
-            case 'name':
-            case 'age':
-            case 'gender':
-            case 'lonlat':
-                this.setState({
-                    ...this.state,
-                    person: {
-                        ...this.state.person,
-                        [event.target.name]: event.target.value
-                    }
-                });
-                break;
-            case 'id':
-                this.setState({
-                    ...this.state,
-                    [event.target.name]: event.target.value
-                });
-                break;
-            default:
-                console.log('Unknow target: ' + event.target.name);
-      }
-    }
-    
-    handleSubmit() {
-        updatePerson(this.state, console.log);
-    }
-    render() {
-        return (
-            <div>
-                <label>
-                    My Id:
-                    <input type="text" name="id" value={this.state.id} onChange={this.handleChange} />
-                </label>
+const UpdateForm = (props) => {
+    const {onChangeValue, handleValidation, onUpdateClick, onCancelClick, returnLocation, loadOldPerson} = props;
+    return (
+        <div>
+            <h1>Update</h1>
+            <CollapsablePanel btTitle="Instructions" btStyle="info">
+                <h4>To update your data fill in the Id field.</h4>
+                <h4>Your saved data will be loaded from the server a few seconds after 
+                you click the load button. (White button with an arrow facing down.</h4>
+            </CollapsablePanel>
+            
+            <FormGroup
+                controlId={'id'}
+            >
+                <InputGroup>
+                    <InputGroup.Addon>
+                        <Button
+                            onClick={loadOldPerson}
+                        >
+                            <Glyphicon glyph="download-alt"/>
+                        </Button>
+                    </InputGroup.Addon>
+                    <FormControl
+                        type={'text'}
+                        bsSize="large"
+                        placeholder={'Your Id'}
+                        onChange={ onChangeValue }
+                    />
+                    <FormControl.Feedback />
+                </InputGroup>
+            </FormGroup>
+            
+            <StandardFormField
+                name="Name"
+                id="name"
+                text="Your full name"
+                changeHandler={onChangeValue}
+                validationHandler={handleValidation.nameValidation()}
+            />
+            
+            <StandardFormField
+                name="Age"
+                id="age"
+                text="Your age"
+                changeHandler={onChangeValue}
+                validationHandler={handleValidation.ageValidation()}
+            />
+            
+            <GenderRadio 
+                genderValidation={handleValidation.genderValidation()}
+                onChangeValue={onChangeValue}
+            />
+            
+            <FormGroup
+                controlId="lonlat"
+                validationState={handleValidation.locationValidation()}
+            >
+                <ControlLabel>Location</ControlLabel>
                 <br/>
-                <label>
-                    Name:
-                    <input type="text" name="name" value={this.state.person.name} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <label>
-                    Age:
-                    <input type="number" name="age" value={this.state.person.age} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <label>
-                    Gender:
-                    <input type="text" name="gender" value={this.state.person.gender} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <label>
-                    Location:
-                    <input type="text" name="lonlat" value={this.state.person.lonlat} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <button onClick={this.handleSubmit}>Update</button>
+                <MapPickerModal 
+                    returnLocation={returnLocation}
+                />
+            </FormGroup>
+            
+            <div className="text-center">
+                 <Button 
+                    id="cancel"
+                    bsStyle="danger"
+                    onClick={onCancelClick}
+                    bsSize="large"
+                >
+                    Cancel
+                </Button>
+                {" "}
+                <Button 
+                    id="update"
+                    bsStyle="success"
+                    onClick={onUpdateClick}
+                    bsSize="large"
+                >
+                    Update
+                </Button>
             </div>
-        );
-    }
-}
+        </div>
+    
+    );
+};
 
 export default UpdateForm;

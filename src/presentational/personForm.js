@@ -1,7 +1,8 @@
 import React from 'react';
-import { Form, FormGroup, ControlLabel, Button, Radio, HelpBlock } from 'react-bootstrap';
+import { Form, FormGroup, ControlLabel, Button, HelpBlock } from 'react-bootstrap';
 import CollapsablePanel from './../selfcontained/collapsablePanel';
 import StandardFormField from './standardFormField';
+import GenderRadio from './standardGenderRadio';
 import ResourceField from './standardResourceField';
 import MapPickerModal from './../container/mapPickerContainer';
 
@@ -32,33 +33,10 @@ const PersonForm = (props) => {
                 validationHandler={handleValidation.ageValidation()}
             />
             
-            <FormGroup
-                controlId="gender"
-                validationState={handleValidation.genderValidation()}
-            >
-                <ControlLabel>Gender</ControlLabel>
-                <FormGroup>
-                    <Radio 
-                        id="gender"
-                        inline
-                        value="M"
-                        onClick={onChangeValue}
-                    >
-                        Male
-                    </Radio>
-                    
-                    {' '}
-                    
-                    <Radio
-                        id="gender"
-                        inline
-                        value="F"
-                        onClick={onChangeValue}
-                    >
-                        Female
-                    </Radio>
-                </FormGroup>
-            </FormGroup>
+            <GenderRadio 
+                genderValidation={handleValidation.genderValidation()}
+                onChangeValue={onChangeValue}
+            />
             
             <FormGroup
                 controlId="lonlat"

@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {v4} from 'uuid';
-import { updatePerson } from './../../rest/access';
+import updatePerson from './../../rest/updatePerson';
 
 describe('API postNewPerson request test', () => {
     
@@ -16,9 +16,8 @@ describe('API postNewPerson request test', () => {
                     lonlat: '',
                 },
             },
-            (response, body) => {
-                body = JSON.parse(body);
-                expect(response.statusCode).to.eql(200);
+            (sucessfull, body) => {
+                expect(sucessfull).to.be.ok;
                 expect(body).to.have.property('id');
                 expect(body).to.have.property('name');
                 expect(body.name).to.be.eql(name);

@@ -4,7 +4,7 @@ import { Route } from 'react-router-dom'
 import PersonFormContainer from './../container/personFormContainer';
 import ReportForm from './reportForm';
 import TradeForm from './tradeForm';
-import UpdateForm from './updateForm';
+import UpdateFormContainer from './../container/updateFormContainer';
 import Home from './../presentational/statistics';
 
 
@@ -14,7 +14,7 @@ const Routes = () => {
             <Route exact path="/" component={Home}/>
             <Route path="/signup" component={PersonFormContainer}/>
             <Route path="/reportinfection" component={ReportForm}/>
-            <Route path="/update" component={UpdateForm}/>
+            <Route path="/update" component={UpdateFormContainer}/>
             <Route path="/trade" component={TradeForm}/>
         </div>
     );

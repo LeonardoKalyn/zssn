@@ -1,4 +1,4 @@
-import { simpleGet, simplePost, simplePatch } from './restApiAccess';
+import { simpleGet, simplePost } from './restApiAccess';
 import * as URL from './url';
 
 const wrapCallback = (callback) => {
@@ -32,22 +32,6 @@ export const reportInfected = (data, callback) => {
     simplePost(
         URL.infectedURL(data.id),
         {infected: data.infected},
-        callback
-    );
-};
-
-export const getSinglePerson = (id, callback) => {
-    simpleGet(
-        URL.personIdURL(id),
-        wrapCallback(callback)
-    );
-};
-
-export const updatePerson = (person, callback) => {
-    const {id, ...rest} = person;
-    simplePatch(
-        URL.personIdURL(id),
-        rest,
         callback
     );
 };
