@@ -6,7 +6,7 @@ const ResourceField = ({
     text=id,
     type="number",
     glyph,
-    validationHandler,
+    validationHandler=()=>null,
     changeHandler
 }) => {
     return (

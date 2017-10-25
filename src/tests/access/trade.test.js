@@ -1,4 +1,4 @@
-import { trade } from './../../rest/access';
+import { trade } from './../../rest/properties';
 import { expect } from 'chai';
 
 describe('API trade request test', () => {
@@ -14,8 +14,8 @@ describe('API trade request test', () => {
         };
         return trade(
             tradeData,
-            (response, body) => {
-                expect(response.statusCode).to.eql(204);
+            (successful, statusCodey) => {
+                expect(successful).to.be.ok;
             }
         );
     });
@@ -31,8 +31,8 @@ describe('API trade request test', () => {
         };
         return trade(
             tradeData,
-            (response, body) => {
-                expect(response.statusCode).to.eql(422);
+            (sucessfull, statusCode) => {
+                expect(sucessfull.statusCode).to.not.be.ok;
             }
         );
     });
@@ -48,8 +48,8 @@ describe('API trade request test', () => {
         };
         return trade(
             tradeData,
-            (response, body) => {
-                expect(response.statusCode).to.eql(422);
+            (successful, statusCode) => {
+                expect(successful).to.not.be.ok;
             }
         );
     });
@@ -65,8 +65,8 @@ describe('API trade request test', () => {
         };
         return trade(
             tradeData,
-            (response, body) => {
-                expect(response.statusCode).to.eql(404);
+            (sucessfull, statusCode) => {
+                expect(sucessfull).to.not.be.ok;
             }
         );
     });

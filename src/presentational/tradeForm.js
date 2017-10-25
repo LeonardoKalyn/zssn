@@ -1,76 +1,180 @@
 import React from 'react';
-import { trade } from './../rest/access';
+import { Form, FormGroup, ControlLabel, Button, HelpBlock, Glyphicon, Table } from 'react-bootstrap';
+import ResourceField from './standardResourceField';
+import StandardFormField from './standardFormField';
+import CollapsablePanel from './../selfcontained/collapsablePanel';
 
-class TradeForm extends React.Component {
-    constructor(props) {
-    super(props);
-        this.state = {
-            id: '94710ac3-ac65-418b-8d61-a92c9d1096cb',
-            consumer: {
-                name: 'Kalyn',
-                pick: 'Water:1',
-                payment: 'Water:1',
-            },
-        };
-        
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleChange(event) {
-        switch(event.target.name){
-            case 'id':
-                this.setState({
-                    ...this.state,
-                    [event.target.name]: event.target.value
-                });
-                break;
-            case 'name':
-            case 'pick':
-            case 'payment':
-                this.setState({
-                    ...this.state,
-                    consumer:{
-                        ...this.state.consumer,
-                        [event.target.name]: event.target.value
-                    }
-                });
-                break;
-            default:
-                console.log("Unknown target: " + event.target.name);
-        }
-    }
-    
-    handleSubmit() {
-        trade(this.state, console.log);
-    }
-    render() {
-        return (
-            <div>
-                <label>
-                    My Id:
-                    <input type="text" name="id" value={this.state.id} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <label>
-                    Name:
-                    <input type="text" name="name" value={this.state.consumer.name} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <label>
-                    Pick:
-                    <input type="text" name="pick" value={this.state.consumer.pick} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <label>
-                    Payment:
-                    <input type="text" name="payment" value={this.state.consumer.payment} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <button onClick={this.handleSubmit}>Trade</button>
+const TradeForm = (props) => {
+    const {onChangeValue, handleValidation} = props;
+    return (
+        <div>
+            <h1>Sign Up</h1>
+            <CollapsablePanel btTitle="Instructions" btStyle="info">
+                <h4>To execute the trade, fill in the fields bellow.</h4>
+                <h4>The trade is based on a point system, in witch every resource
+                has a number of points as value.</h4>
+                <h4>The number of points of each side of the trade must be equal.</h4>
+                
+                <Table responsive>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><Glyphicon glyph='tint' /></td>
+                            <td>Water</td>
+                            <td>4</td>
+                        </tr>
+                        <tr>
+                            <td><Glyphicon glyph='cutlery' /></td>
+                            <td>Food</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td><Glyphicon glyph='plus' /></td>
+                            <td>Medication</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td><Glyphicon glyph='fire' /></td>
+                            <td>Ammunition</td>
+                            <td>1</td>
+                        </tr>
+                    </tbody>
+                </Table>
+            </CollapsablePanel>
+            
+            <StandardFormField
+                name="Id"
+                id="id"
+                text="Your id"
+                changeHandler={onChangeValue}
+            />
+            
+            <StandardFormField
+                name="Trader's Name"
+                id="name"
+                text="Name of the person receiving the trade"
+                changeHandler={onChangeValue}
+            />
+            
+            <FormGroup>
+                <ControlLabel>Picking</ControlLabel>
+                <HelpBlock>
+                    Resources you are purchasing.
+                </HelpBlock>
+                
+                <Form inline>
+                    <ResourceField
+                        id="bWater"
+                        text="Water"
+                        glyph="tint"
+                        changeHandler={onChangeValue}
+                        validationHandler={handleValidation.resourceValidation}
+                    />
+                    
+                    <ResourceField
+                        id="bFood"
+                        text="Food"
+                        glyph="cutlery"
+                        changeHandler={onChangeValue}
+                        validationHandler={handleValidation.resourceValidation}
+                    />
+                    
+                    <ResourceField
+                        id="bMedication"
+                        text="Medication"
+                        glyph="plus"
+                        changeHandler={onChangeValue}
+                        validationHandler={handleValidation.resourceValidation}
+                    />
+                    
+                    <ResourceField
+                        id="bAmmunition"
+                        text="Ammunition"
+                        glyph="fire"
+                        changeHandler={onChangeValue}
+                        validationHandler={handleValidation.resourceValidation}
+                    />
+                </Form>
+            </FormGroup>
+                
+            <FormGroup>
+                <ControlLabel>Payment</ControlLabel>
+                <HelpBlock>
+                    Resources you are paying
+                </HelpBlock>
+                
+                <Form inline>
+                    <ResourceField
+                        id="pWater"
+                        text="Water"
+                        glyph="tint"
+                        changeHandler={onChangeValue}
+                        validationHandler={handleValidation.resourceValidation}
+                    />
+                    
+                    <ResourceField
+                        id="pFood"
+                        text="Food"
+                        glyph="cutlery"
+                        changeHandler={onChangeValue}
+                        validationHandler={handleValidation.resourceValidation}
+                    />
+                    
+                    <ResourceField
+                        id="pMedication"
+                        text="Medication"
+                        glyph="plus"
+                        changeHandler={onChangeValue}
+                        validationHandler={handleValidation.resourceValidation}
+                    />
+                    
+                    <ResourceField
+                        id="pAmmunition"
+                        text="Ammunition"
+                        glyph="fire"
+                        changeHandler={onChangeValue}
+                        validationHandler={handleValidation.resourceValidation}
+                    />
+                </Form>
+            </FormGroup>
+            
+            <FormGroup
+                validationState={handleValidation.pointsValidation()}
+            >
+                <Table responsive>
+                    <thead>
+                        <tr>
+                            <th><ControlLabel>Picking</ControlLabel></th>
+                            <th><ControlLabel>Payment</ControlLabel></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{props.buying}</td>
+                            <td>{props.paying}</td>
+                        </tr>
+                    </tbody>
+                </Table>
+            </FormGroup>
+            
+            <div className="text-center">
+                <Button 
+                    bsStyle="success"
+                    onClick={props.onTrade}
+                    bsSize="large"
+                >
+                    Trade
+                </Button>
             </div>
-        );
-    }
-}
+         </div>
+    );
+};
+
 
 export default TradeForm;

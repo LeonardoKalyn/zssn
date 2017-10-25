@@ -1,45 +1,43 @@
 import React from 'react';
-import { reportInfected } from './../rest/access';
+import { Button } from 'react-bootstrap';
+import CollapsablePanel from './../selfcontained/collapsablePanel';
+import StandardFormField from './standardFormField';
 
-class ReportForm extends React.Component {
-    constructor(props) {
-    super(props);
-        this.state = {
-            infected: '',
-            id: ''
-        };
-        
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleChange(event) {
-        this.setState({
-            ...this.state,
-            [event.target.name]: event.target.value
-        });
-    }
-    
-    handleSubmit() {
-        reportInfected(this.state, console.log);
-    }
-    render() {
-        return (
-            <div>
-                <label>
-                    Infected:
-                    <input type="text" name="infected" value={this.state.infected} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <label>
-                    My Id:
-                    <input type="text" name="id" value={this.state.id} onChange={this.handleChange} />
-                </label>
-                <br/>
-                <button onClick={this.handleSubmit}>Save</button>
+const ReportForm =(props) =>{
+    const {onChangeValue} = props; 
+    return (
+        <div>
+            <h1>Report Infected User</h1>
+            <CollapsablePanel btTitle="Instructions" btStyle="warning">
+                <h4>To report someone infect you need your id and the id of the person you suspect.</h4>
+                
+            </CollapsablePanel>
+            
+            <StandardFormField
+                name="Infected Id"
+                id="infected"
+                text="The Id of the infected person"
+                changeHandler={onChangeValue}
+            />
+            
+            <StandardFormField
+                name="Your Id"
+                id="id"
+                text="Your Id"
+                changeHandler={onChangeValue}
+            />
+            
+            <div className="text-center">
+                <Button 
+                    bsStyle="danger"
+                    onClick={props.onReport}
+                    bsSize="large"
+                >
+                    Report Infetected
+                </Button>
             </div>
-        );
-    }
-}
+         </div>
+    );
+};
 
 export default ReportForm;

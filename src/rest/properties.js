@@ -7,7 +7,7 @@ export const trade = (data, callback) => {
         tradeURL(id),
         rest,
         (response, body) => {
-            callback((response.statusCode===204), JSON.parse(body));
+            callback((response.statusCode===204), response.statusCode);
         }
     );
 };

@@ -7,7 +7,7 @@ import ResourceField from './standardResourceField';
 import MapPickerModal from './../container/mapPickerContainer';
 
 const PersonForm = (props) => {
-    const {onChangeValue, handleValidation, onSaveClick, returnLocation} = props;
+    const {onChangeValue, handleValidation} = props;
     return (
             
         <div>
@@ -45,7 +45,7 @@ const PersonForm = (props) => {
                 <ControlLabel>Location</ControlLabel>
                 <br/>
                 <MapPickerModal 
-                    returnLocation={returnLocation}
+                    returnLocation={props.returnLocation}
                 />
             </FormGroup>
             
@@ -89,15 +89,16 @@ const PersonForm = (props) => {
                 </Form>
                 
             </FormGroup>
-                
-            <Button 
-                bsStyle="success"
-                onClick={onSaveClick}
-                bsSize="large"
-                block
-            >
-                Save
-            </Button>
+            <div className="text-center">
+                <Button 
+                    bsStyle="success"
+                    onClick={props.onSaveClick}
+                    bsSize="large"
+                    block
+                >
+                    Save
+                </Button>
+            </div>
          </div>
     );
 };
