@@ -7,6 +7,7 @@ import TradeForm from './tradeForm';
 import UpdateForm from './updateForm';
 import Home from './../presentational/statistics';
 
+
 const Routes = () => {
     return(
         <div>

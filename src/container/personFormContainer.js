@@ -32,6 +32,7 @@ class PersonFormContainer extends React.Component {
         this.handleValidationState.locationValidation = this.handleValidationState.locationValidation.bind(this);
         this.handleValidationState.resourceValidation = this.handleValidationState.resourceValidation.bind(this);
         
+        this.returnLocation = this.returnLocation.bind(this);
         this.submitForm = this.submitForm.bind(this);
         this.handleSaveClick = this.handleSaveClick.bind(this);
     }
@@ -56,7 +57,6 @@ class PersonFormContainer extends React.Component {
             case 'name':
             case 'age':
             case 'gender':
-            case 'lonlat':
                 changeHandler("person");
                 break;
             case 'Water':
@@ -68,6 +68,16 @@ class PersonFormContainer extends React.Component {
             default:
                 console.log("Unknow target:" + event.target.name);
         }
+    }
+    
+    returnLocation(lonlat) {
+        this.setState({
+                ...this.state,
+                person: {
+                    ...this.state.person,
+                    lonlat: "".concat(lonlat.lat, ',', lonlat.lon)
+                }
+            });
     }
     
     handleValidationState = {
@@ -123,9 +133,7 @@ class PersonFormContainer extends React.Component {
             
         if(!validationLogic.validateLocation(this.state.person.lonlat)){
             window.alert(
-                'Invalid form of location!\n' +
-                'The location should be your current coordinates: "longitude,latitude".' + 
-                'If you dont know your coordinates leave it blank.');
+                'Invalid location!');
             document.getElementById("lonlat").focus();
             return false;
         }
@@ -201,11 +209,12 @@ class PersonFormContainer extends React.Component {
     
     render() {
         return (
-            PersonForm(
-                this.handleChange,
-                this.handleSaveClick,
-                this.handleValidationState
-            )
+            <PersonForm
+                onChangeValue={this.handleChange}
+                onSaveClick={this.handleSaveClick}
+                handleValidation={this.handleValidationState}
+                returnLocation={this.returnLocation}
+            />
         );
     }
 }

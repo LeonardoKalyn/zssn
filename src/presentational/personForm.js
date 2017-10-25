@@ -3,8 +3,10 @@ import { Form, FormGroup, ControlLabel, Button, Radio, HelpBlock } from 'react-b
 import CollapsablePanel from './../selfcontained/collapsablePanel';
 import StandardFormField from './standardFormField';
 import ResourceField from './standardResourceField';
+import MapPickerModal from './../container/mapPickerContainer';
 
-const PersonForm = (onChangeValue, onSaveClickt, handleValidation) => {
+const PersonForm = (props) => {
+    const {onChangeValue, handleValidation, onSaveClick, returnLocation} = props;
     return (
             
         <div>
@@ -26,7 +28,6 @@ const PersonForm = (onChangeValue, onSaveClickt, handleValidation) => {
                 name="Age"
                 id="age"
                 text="Your age"
-                type="number"
                 changeHandler={onChangeValue}
                 validationHandler={handleValidation.ageValidation()}
             />
@@ -59,13 +60,16 @@ const PersonForm = (onChangeValue, onSaveClickt, handleValidation) => {
                 </FormGroup>
             </FormGroup>
             
-            <StandardFormField
-                name="Location"
-                id="lonlat"
-                text="Your current location"
-                changeHandler={onChangeValue}
-                validationHandler={handleValidation.locationValidation()}
-            />
+            <FormGroup
+                controlId="lonlat"
+                validationState={handleValidation.locationValidation()}
+            >
+                <ControlLabel>Location</ControlLabel>
+                <br/>
+                <MapPickerModal 
+                    returnLocation={returnLocation}
+                />
+            </FormGroup>
             
             <FormGroup>
                 <ControlLabel>Resources</ControlLabel>
@@ -110,7 +114,7 @@ const PersonForm = (onChangeValue, onSaveClickt, handleValidation) => {
                 
             <Button 
                 bsStyle="success"
-                onClick={onSaveClickt}
+                onClick={onSaveClick}
                 bsSize="large"
                 block
             >
