@@ -51,23 +51,3 @@ export const updatePerson = (person, callback) => {
         callback
     );
 };
-
-export const getReport = (reportName, callback) => {
-    const wrappedCallback = wrapCallback(callback);
-    switch(reportName){
-        case 'infected':
-            simpleGet(URL.getInfectedURL(), wrappedCallback);
-            break;
-        case 'non infected':
-            simpleGet(URL.getNonInfectedURL(), wrappedCallback);
-            break;
-        case 'inventory':
-            simpleGet(URL.getInventoryURL(), wrappedCallback);
-            break;
-        case 'lost points':
-            simpleGet(URL.getInfectedPointsURL(), wrappedCallback);
-            break;
-        default:
-            simpleGet(URL.getAvailableReportsURL(), wrappedCallback);
-    }
-};

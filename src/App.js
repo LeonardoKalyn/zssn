@@ -1,7 +1,6 @@
 import React from 'react';
-
-import Menu from './presentational/menu';
 import {BrowserRouter} from 'react-router-dom';
+import Menu from './presentational/menu';
 import Routes from './presentational/routes';
 
 const App = () => {

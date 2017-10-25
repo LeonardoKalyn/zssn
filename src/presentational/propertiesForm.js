@@ -1,5 +1,5 @@
 import React from 'react';
-import { getPersonProperties } from './rest/access';
+import { getPersonProperties } from './../rest/access';
 
 class PropertiesForm extends React.Component {
     constructor(props) {

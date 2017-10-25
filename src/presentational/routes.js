@@ -3,16 +3,14 @@ import { Route } from 'react-router-dom'
 
 import PersonFormContainer from './../container/personFormContainer';
 import ReportForm from './reportForm';
-// import SinglePersonForm from './getPersonForm';
-// import GetReportForm from './getReportForm';
 import TradeForm from './tradeForm';
-// import PropertiesForm from './propertiesForm';
 import UpdateForm from './updateForm';
+import Home from './../presentational/statistics';
 
 const Routes = () => {
     return(
         <div>
-            <Route exact path="/"/>
+            <Route exact path="/" component={Home}/>
             <Route path="/signup" component={PersonFormContainer}/>
             <Route path="/reportinfection" component={ReportForm}/>
             <Route path="/update" component={UpdateForm}/>

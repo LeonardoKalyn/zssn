@@ -84,7 +84,7 @@ class PersonFormContainer extends React.Component {
                 'success' : 'error',
         
         locationValidation: () => {
-            const {location} = this.state.person.lonlat;
+            const location = this.state.person.lonlat;
             if(location  === '')
                 return null;
             else 
