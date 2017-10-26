@@ -34,11 +34,13 @@ class MapPickerContainer extends React.Component {
     
     saveLocation() {
         this.toggleModal();
-        const lonlat = {
-            lat: this.state.selectedLatLng.lat(),
-            lon: this.state.selectedLatLng.lng()
-        };
-        this.props.returnLocation(lonlat);
+        if(this.state.selectedLatLng){
+            const lonlat = {
+                lat: this.state.selectedLatLng.lat(),
+                lon: this.state.selectedLatLng.lng()
+            };
+            this.props.returnLocation(lonlat);
+        }
     }
     
     render(){
