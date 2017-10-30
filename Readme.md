@@ -1,15 +1,18 @@
 # Zombie Survival Social Network
 
-This project is a implementation of the [ZSSN front-end ZSSN problem[(https://gist.github.com/akitaonrails/694fc9e85735c400d7e0dc8e79576288]
+This project is a implementation of the [ZSSN front-end ZSSN problem](https://gist.github.com/akitaonrails/694fc9e85735c400d7e0dc8e79576288)
 
 
 ## Getting Started
 
 To work locally on this project, navigate to the desired folder, and type in the following command:
-* git clone https://github.com/LeonardoKalyn/zssn.git
+* git clone https://github.com/LeonardoKalyn/zssn.git 
+
 Then open the repository folder/files in a text editor of your preference.
 To install all the dependencies type in :
-* npm install
+
+* npm install <br>
+
 (PS: you'll need to install npm first if you don't have it. [NPM](https://www.npmjs.com/get-npm)
 
 Then you can start a development server, by the following command:
