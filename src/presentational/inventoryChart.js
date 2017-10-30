@@ -36,7 +36,7 @@ class InfectionChart extends React.Component {
     
     render () {
         return (
-            <canvas id="inventoryChart" width="300" height="300"></canvas>
+            <canvas id="inventoryChart" ></canvas>
         );
     }
 }

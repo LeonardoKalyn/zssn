@@ -6,6 +6,7 @@ import PersonFormContainer from './../container/personFormContainer';
 import ReportFormContainer from './../container/reportFormContainer';
 import TradeFormContainer from './../container/tradeFormContainer';
 import UpdateFormContainer from './../container/updateFormContainer';
+import SurvivorsListContainer from './survivorsList';
 import Home from './../presentational/statistics';
 
 
@@ -18,6 +19,7 @@ const Routes = () => {
             <Route path="/reportinfection" component={ReportFormContainer}/>
             <Route path="/update" component={UpdateFormContainer}/>
             <Route path="/trade" component={TradeFormContainer}/>
+            <Route path="/survivorslist" component={SurvivorsListContainer}/>
             </Well>
         </div>
     );

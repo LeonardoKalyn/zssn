@@ -1,6 +1,7 @@
 import React from 'react';
 import submitNewPerson from './../rest/submitNewPerson';
 import PersonForm from './../presentational/personForm';
+import PersonAlert from './personAlertContainer';
 import {withRouter} from 'react-router';
 import * as validationLogic from './personValidationLogic';
 
@@ -20,10 +21,13 @@ class PersonFormContainer extends React.Component {
                 Medication: 0,
                 Ammunition: 0,
             },
+            
+            popup: 'none',
+            adicionalData: null,
         };
         
         this.handleChange = this.handleChange.bind(this);
-        
+        this.dismissPopup = this.dismissPopup.bind(this);
         this.formValidation = this.formValidation.bind(this);
         
         this.handleValidationState.nameValidation = this.handleValidationState.nameValidation.bind(this);
@@ -70,6 +74,13 @@ class PersonFormContainer extends React.Component {
         }
     }
     
+    dismissPopup(){
+         this.setState({
+             ...this.state,
+             popup: 'none',
+         });
+     }
+    
     returnLocation(lonlat) {
         this.setState({
                 ...this.state,
@@ -86,7 +97,7 @@ class PersonFormContainer extends React.Component {
                 'success' : 'error',
         
         ageValidation:() =>
-            validationLogic.validateNumber(this.state.person.age) ?
+            (this.state.person.age > 1) && (validationLogic.validateNumber(this.state.person.age)) ?
                 'success' : 'error',
         
         genderValidation: () =>
@@ -114,51 +125,66 @@ class PersonFormContainer extends React.Component {
     
     formValidation = () =>{
         if(!validationLogic.validateName(this.state.person.name)){
-            window.alert('Name is required!');
-            document.getElementById("name").focus();
+            this.setState({
+                ...this.state,
+                popup: "invalid name"
+            });
             return false;
         }
             
-        if(!validationLogic.validateNumber(this.state.person.age)){
-            window.alert('A valid age is required!');
-            document.getElementById("age").focus();
+        if(this.state.person.age <= 1 || !validationLogic.validateNumber(this.state.person.age)){
+            this.setState({
+                ...this.state,
+                popup: 'invalid age'
+            });
             return false;
         }
             
         if(!validationLogic.validateGender(this.state.person.gender)){
-            window.alert('Gender is required!');
-            document.getElementById("gender").focus();
+            this.setState({
+                ...this.state,
+                popup: 'invalid gender'
+            });
             return false;
         }
             
         if(!validationLogic.validateLocation(this.state.person.lonlat)){
-            window.alert(
-                'Invalid location!');
-            document.getElementById("lonlat").focus();
+            this.setState({
+                ...this.state,
+                popup:'invalid location'
+            });
             return false;
         }
             
         if(!validationLogic.validateNumber(this.state.items.Water)){
-            window.alert('Your Water resource is invalid');
-            document.getElementById('Water').focus();
+            this.setState({
+                ...this.state,
+                popup:'invalid Water'
+            });
             return false;
         }
         
         if(!validationLogic.validateNumber(this.state.items.Food)){
-            window.alert('Your Food resourcer is invalid!');
-            document.getElementById('Food').focus();
+            this.setState({
+                ...this.state,
+                popup:'invalid Food'
+            });
             return false;
         }
         
         if(!validationLogic.validateNumber(this.state.items.Medication)){
-            window.alert('Medication is invalid!');
-            document.getElementById("Medication").focus();
+            this.setState({
+                ...this.state,
+                popup:'invalid Medication'
+            });
             return false;
         }
             
         if(!validationLogic.validateNumber(this.state.items.Ammunition)){
-            window.alert('Your Ammunition resource is invalid');
-            document.getElementById('Ammunition').focus();
+            this.setState({
+                ...this.state,
+                popup:'invalid Ammunition'
+            });
             return false;
         }
         
@@ -188,15 +214,19 @@ class PersonFormContainer extends React.Component {
             newPerson,
             (successful, body) => {
                 if(successful){
-                   window.alert('Registration Succeded!\n'
-                   + 'This is your id: ' + body.id 
-                   + '\nIt is important to save your id.');
-                   this.props.history.push('/');
+                    this.setState({
+                        ...this.state,
+                        popup:'successful sign up',
+                        adicionalData: body.id,
+                    });
                 }
                 else {
-                    window.alert('Registration Failed!\n'
-                    + 'This response came from the server: \n'
-                    + body);
+                    console.log(body);
+                    this.setState({
+                        ...this.state,
+                        popup:'failed to sign up',
+                        adicionalData: body,
+                    });
                 }
             }
         );
@@ -209,12 +239,19 @@ class PersonFormContainer extends React.Component {
     
     render() {
         return (
-            <PersonForm
-                onChangeValue={this.handleChange}
-                onSaveClick={this.handleSaveClick}
-                handleValidation={this.handleValidationState}
-                returnLocation={this.returnLocation}
-            />
+            <div>
+                <PersonAlert
+                    popup= {this.state.popup}
+                    dismissPopup={this.dismissPopup}
+                    adicionalData={this.state.adicionalData}
+                />
+                <PersonForm
+                    onChangeValue={this.handleChange}
+                    onSaveClick={this.handleSaveClick}
+                    handleValidation={this.handleValidationState}
+                    returnLocation={this.returnLocation}
+                />
+            </div>
         );
     }
 }

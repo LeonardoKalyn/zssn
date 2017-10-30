@@ -43,6 +43,7 @@ const UpdateForm = (props) => {
                     id="name"
                     text="Your full name"
                     changeHandler={onChangeValue}
+                    value={props.newPerson.name}
                     validationHandler={handleValidation.nameValidation()}
                 />
                 
@@ -51,6 +52,7 @@ const UpdateForm = (props) => {
                     id="age"
                     text="Your age"
                     changeHandler={onChangeValue}
+                    value={props.newPerson.age}
                     validationHandler={handleValidation.ageValidation()}
                 />
                 

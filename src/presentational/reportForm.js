@@ -18,6 +18,7 @@ const ReportForm =(props) =>{
                     name="Infected Id"
                     id="infected"
                     text="The Id of the infected person"
+                    value={props.infectedValue}
                     changeHandler={onChangeValue}
                 />
                 

@@ -1,15 +1,17 @@
 import React from 'react';
 import { trade } from './../rest/properties';
 import TradeForm from './../presentational/tradeForm';
+import TradeAlert from './tradeAlertContainer';
 import * as validationLogic from './personValidationLogic';
+import {withRouter} from 'react-router';
 
 class TradeFormContainer extends React.Component {
     constructor(props) {
     super(props);
         this.state = {
-            id: '94710ac3-ac65-418b-8d61-a92c9d1096cb',
+            id: '',
             consumer: {
-                name: '',
+                name: props.location.state? props.location.state.name : '',
                 pick: {
                     Water: 0,
                     Food: 0,
@@ -23,10 +25,20 @@ class TradeFormContainer extends React.Component {
                     Ammunition: 0
                 },
             },
+            
+            popup: 'none',
         };
         
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.dismissPopup = this.dismissPopup.bind(this);
+    }
+    
+    dismissPopup() {
+        this.setState({
+            ...this.state,
+            popup: 'none'
+        });
     }
 
     handleChange(event) {
@@ -49,7 +61,7 @@ class TradeFormContainer extends React.Component {
             case 'id':
                 this.setState({
                     ...this.state,
-                    [event.target.name]: value
+                    id: value
                 });
                 break;
             case 'name':
@@ -141,75 +153,97 @@ class TradeFormContainer extends React.Component {
     
     validateForm(){
         if(!this.state.id){
-            window.alert("Your id is required.");
-            document.getElementById("id").focus();
+            this.setState({
+                ...this.state,
+                popup: "empty id"
+            });
             return false;
         }
         
         if(!validationLogic.validateName(this.state.consumer.name)){
-            window.alert("The given name is invalid.");
-            document.getElementById("name").focus();
+            this.setState({
+                ...this.state,
+                popup: "invalid name"
+            });
             return false;
         }
         
         if(!validationLogic.validateNumber(this.state.consumer.pick.Water)){
-            window.alert('Your Water resource is invalid');
-            document.getElementById('bWater').focus();
+            this.setState({
+                ...this.state,
+                popup: "invalid bWater"
+            });
             return false;
         }
         
         if(!validationLogic.validateNumber(this.state.consumer.pick.Food)){
-            window.alert('Your Food resourcer is invalid!');
-            document.getElementById('bFood').focus();
+            this.setState({
+                ...this.state,
+                popup: "invalid bFood"
+            });
             return false;
         }
         
         if(!validationLogic.validateNumber(this.state.consumer.pick.Medication)){
-            window.alert('Medication is invalid!');
-            document.getElementById("bMedication").focus();
+            this.setState({
+                ...this.state,
+                popup: "invalid bMedication"
+            });
             return false;
         }
             
         if(!validationLogic.validateNumber(this.state.consumer.pick.Ammunition)){
-            window.alert('Your Ammunition resource is invalid');
-            document.getElementById('bAmmunition').focus();
+            this.setState({
+                ...this.state,
+                popup: "invalid pAmmunition"
+            });
             return false;
         }
         
         if(!validationLogic.validateNumber(this.state.consumer.payment.Water)){
-            window.alert('Your Water resource is invalid');
-            document.getElementById('pWater').focus();
+            this.setState({
+                ...this.state,
+                popup: "invalid pWater"
+            });
             return false;
         }
         
         if(!validationLogic.validateNumber(this.state.consumer.payment.Food)){
-            window.alert('Your Food resourcer is invalid!');
-            document.getElementById('pFood').focus();
+            this.setState({
+                ...this.state,
+                popup: "invalid pFood"
+            });
             return false;
         }
         
         if(!validationLogic.validateNumber(this.state.consumer.payment.Medication)){
-            window.alert('Medication is invalid!');
-            document.getElementById("pMedication").focus();
+            this.setState({
+                ...this.state,
+                popup: "invalid pMedication"
+            });
             return false;
         }
             
         if(!validationLogic.validateNumber(this.state.consumer.payment.Ammunition)){
-            window.alert('Your Ammunition resource is invalid');
-            document.getElementById('pAmmunition').focus();
+            this.setState({
+                ...this.state,
+                popup: "invalid pAmmunition"
+            });
             return false;
         }
         
         if(!this.tradeValidationLogic()){
-            window.alert("The number of points on each side of the "+
-                "trade must be equal, but you can't trade the same amount of the " +
-                "the same items.");
+            this.setState({
+                ...this.state,
+                popup: "equal data"
+            });
             return false;
         }
         return true;
     }
     
     handleSubmit() {
+        console.log(this.state);
         const mapItems = (items) =>{
             let response = "";
             Object.keys(items).forEach(
@@ -244,31 +278,40 @@ class TradeFormContainer extends React.Component {
                 tradeData,
                 (successful, response) => {
                     if(successful){
-                       window.alert('Trade Succeded!');
-                       this.props.history.push('/');
+                       this.setState({
+                            ...this.state,
+                            popup: "successful trade"
+                        });
                     }
                     else {
-                        window.alert('Trade Failed!\n'
-                        + 'This response came from the server: \n'
-                        + response);
+                        this.setState({
+                            ...this.state,
+                            popup: "failed to trade"
+                        });
                     }
                 }
             );
         }
-            
     }
     
     render() {
         return (
-            <TradeForm 
-                onTrade={this.handleSubmit}
-                onChangeValue={this.handleChange}
-                handleValidation={this.handleValidationState}
-                buying={this.calculatePoints(this.state.consumer.pick)}
-                paying={this.calculatePoints(this.state.consumer.payment)}
-            />
+            <div>
+                <TradeAlert 
+                    popup={this.state.popup}
+                    dismissPopup={this.dismissPopup}
+                />
+                <TradeForm 
+                    name={this.state.consumer.name}
+                    onTrade={this.handleSubmit}
+                    onChangeValue={this.handleChange}
+                    handleValidation={this.handleValidationState}
+                    buying={this.calculatePoints(this.state.consumer.pick)}
+                    paying={this.calculatePoints(this.state.consumer.payment)}
+                />
+            </div>
         );
     }
 }
 
-export default TradeFormContainer;
+export default withRouter(TradeFormContainer);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 
-const StandardFormField = ({name, id, text, type="text", validationHandler, changeHandler}) => {
+const StandardFormField = ({name, id, text, value='', type="text", validationHandler, changeHandler}) => {
     return (
         <FormGroup
             controlId={id}
@@ -12,6 +12,7 @@ const StandardFormField = ({name, id, text, type="text", validationHandler, chan
                 type={type}
                 placeholder={text}
                 onChange={changeHandler}
+                value={value}
             />
             <FormControl.Feedback />
         </FormGroup>    

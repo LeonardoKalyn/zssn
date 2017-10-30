@@ -8,10 +8,10 @@ const Menu = () => {
             <Navbar.Header>
                 <LinkContainer to="/">
                     <div>
-                    <Navbar.Brand>
-                        ZSSN
-                    </Navbar.Brand>
-                </div>
+                        <Navbar.Brand>
+                            ZSSN
+                        </Navbar.Brand>
+                    </div>
                 </LinkContainer>
                 <Navbar.Toggle />
             </Navbar.Header>
@@ -32,6 +32,12 @@ const Menu = () => {
                     <LinkContainer to="/trade">
                         <NavItem>
                             Trade
+                        </NavItem>
+                    </LinkContainer>
+                    
+                    <LinkContainer to="/survivorslist">
+                        <NavItem>
+                            Survivors
                         </NavItem>
                     </LinkContainer>
                 </Nav>

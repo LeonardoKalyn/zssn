@@ -7,7 +7,7 @@ class LostPointsPainel extends React.Component {
     constructor(props){
         super(props);
         
-        this.state={lostPoints: 0};
+        this.state={lostPoints: 'Loading...'};
     }
     
     componentWillMount(){

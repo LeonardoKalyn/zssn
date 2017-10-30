@@ -60,6 +60,7 @@ const TradeForm = (props) => {
                     name="Trader's Name"
                     id="name"
                     text="Name of the person receiving the trade"
+                    value={props.name}
                     changeHandler={onChangeValue}
                 />
                 

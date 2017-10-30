@@ -4,10 +4,10 @@ export const simpleGet = (url, callback) => {
     request(
         url, 
         (err, response, body) => {
-            if(err && (process.env.NODE_ENV !== 'production')){
+            if(err){
                 console.log(err);
             }
-            if(callback && !err)
+            if(callback)
                 callback(response, body);
         });
 };

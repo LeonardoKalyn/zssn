@@ -1,6 +1,8 @@
 import React from 'react';
+import {withRouter} from 'react-router';
 import updatePerson, { getSinglePerson } from './../rest/updatePerson';
 import UpdateForm from './../presentational/updateForm';
+import UpdateAlert from './updateAlertContainer';
 import * as validationLogic from './personValidationLogic';
 
 class UpdateFormContainer extends React.Component {
@@ -10,19 +12,22 @@ class UpdateFormContainer extends React.Component {
             id: '',
             newPerson: {
                 name: '',
-                age: -1,
+                age: '',
                 gender: '',
                 lonlat: '',
             },
             oldPerson: {
                 name: '',
-                age: -1,
+                age: '',
                 gender: '',
                 lonlat: '',
-            }
+            },
+            
+            popup: 'none'
         };
         
         this.handleChange = this.handleChange.bind(this);
+        this.dismissPopup = this.dismissPopup.bind(this);
         this.formValidation = this.formValidation.bind(this);
         
         this.handleValidationState.nameValidation = this.handleValidationState.nameValidation.bind(this);
@@ -55,6 +60,13 @@ class UpdateFormContainer extends React.Component {
                 }
             });
         }
+     }
+     
+     dismissPopup(){
+         this.setState({
+             ...this.state,
+             popup: 'none',
+         });
      }
      
      returnLocation(lonlat) {
@@ -114,37 +126,54 @@ class UpdateFormContainer extends React.Component {
     }
     
     formValidation = () =>{
-        
-        if(this.state.newPerson === this.state.oldPerson){
-            window.alert("To update your data you must make "+
-                "it different from the previous values." +
-                "If you don't want to update just click cancel, " +
-                "or move to another page.");
-            document.getElementById("cancel").focus();
+        if(!this.state.id){
+            this.setState({
+                ...this.state,
+                popup: "empty id"
+            });
+            return false;
         }
         
         if(!validationLogic.validateName(this.state.newPerson.name)){
-            window.alert('Name is required!');
-            document.getElementById("name").focus();
+            this.setState({
+                ...this.state,
+                popup: "invalid name"
+            });
             return false;
         }
             
         if(!validationLogic.validateNumber(this.state.newPerson.age)){
-            window.alert('A valid age is required!');
-            document.getElementById("age").focus();
+            this.setState({
+                ...this.state,
+                popup: 'invalid age'
+            });
             return false;
         }
             
         if(!validationLogic.validateGender(this.state.newPerson.gender)){
-            window.alert('Gender is required!');
-            document.getElementById("gender").focus();
+            this.setState({
+                ...this.state,
+                popup: 'invalid gender'
+            });
             return false;
         }
             
         if(!validationLogic.validateLocation(this.state.newPerson.lonlat)){
-            window.alert(
-                'Invalid location!');
-            document.getElementById("lonlat").focus();
+            this.setState({
+                ...this.state,
+                popup:'invalid location'
+            });
+            return false;
+        }
+        
+        if( (JSON.stringify(this.state.newPerson)) ===
+            (JSON.stringify(this.state.oldPerson))
+        ){
+            this.setState({
+                ...this.state,
+                popup: 'equal data'
+                }
+            );
             return false;
         }
         
@@ -161,50 +190,58 @@ class UpdateFormContainer extends React.Component {
             newPerson,
             (successful, body) => {
                 if(successful){
-                   window.alert('Update Succeded!\n');
-                   this.props.history.push('/');
+                    this.setState({
+                        ...this.state,
+                        popup: 'successful update'
+                    });
                 }
                 else {
-                    window.alert('Update Failed!\n'
-                    + 'This response came from the server: \n'
-                    + body);
+                    this.setState({
+                        ...this.state,
+                        popup: 'failed to update'
+                    });
                 }
             }
         );
     }
     
     loadOldPerson(){
-        getSinglePerson(
-            this.state.id,
-            (successful, body) => {
-                if(successful){
-                    this.setState({
-                        ...this.state,
-                        oldPerson:{
-                            name: body.name,
-                            age: body.age,
-                            gender: body.gender,
-                            lonlat: body.lonlat
-                        },
-                        newPerson:{
-                            name: body.name,
-                            age: body.age,
-                            gender: body.gender,
-                            lonlat: body.lonlat
-                        }
-                    });
+        if(this.state.id){
+            getSinglePerson(
+                this.state.id,
+                (successful, body) => {
+                    if(successful){
+                        this.setState({
+                            ...this.state,
+                            oldPerson:{
+                                name: body.name,
+                                age: body.age,
+                                gender: body.gender,
+                                lonlat: body.lonlat
+                            },
+                            newPerson:{
+                                name: body.name,
+                                age: body.age,
+                                gender: body.gender,
+                                lonlat: body.lonlat
+                            }
+                        });
+                    }
+                    else{
+                        this.setState({
+                            ...this.state,
+                            popup: 'failed to fetch data'
+                        });
+                    }
                 }
-                else{
-                    
-                    window.alert("An Error occurred!\n" +
-                        "This is may be something with the server" +
-                        "or you may have a typo in your id.\nThe following response came back:\n" +
-                        body);
-                    document.getElementById("id").focus();
-                    
-                }
-            }
-        );
+            );
+        }
+        else{
+            this.setState({
+                ...this.state,
+                popup: 'empty id'
+            });
+        }
     }
     
     handleUpdateClick() {
@@ -218,16 +255,23 @@ class UpdateFormContainer extends React.Component {
     
     render() {
         return (
-            <UpdateForm 
-                onChangeValue={this.handleChange}
-                loadOldPerson={this.loadOldPerson}
-                onUpdateClick={this.handleUpdateClick}
-                onCancelClick={this.handleCancelClick}
-                handleValidation={this.handleValidationState}
-                returnLocation={this.returnLocation}
-            />
+            <div>
+                <UpdateAlert 
+                    popup={this.state.popup}
+                    dismissPopup={this.dismissPopup}
+                />
+                <UpdateForm 
+                    newPerson={this.state.newPerson}
+                    onChangeValue={this.handleChange}
+                    loadOldPerson={this.loadOldPerson}
+                    onUpdateClick={this.handleUpdateClick}
+                    onCancelClick={this.handleCancelClick}
+                    handleValidation={this.handleValidationState}
+                    returnLocation={this.returnLocation}
+                />
+            </div>
         );
     }
 }
 
-export default UpdateFormContainer;
+export default withRouter(UpdateFormContainer);

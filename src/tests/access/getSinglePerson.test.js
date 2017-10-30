@@ -22,8 +22,6 @@ describe('API GetSinglePerson request test', () => {
             "invalid id",
             (successful, body) => {
                 expect(successful).to.not.be.ok;
-                expect(body).to.have.property('status');
-                expect(body.status).to.be.eql('404');
             }
         );
     });

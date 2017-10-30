@@ -1,16 +1,20 @@
 import React from 'react';
 import reportInfected from './../rest/reportInfection';
 import ReportForm from './../presentational/reportForm';
+import ReportAlert from './reportAlertContainer';
+import {withRouter} from 'react-router';
 
 class ReportFormContainer extends React.Component {
     constructor(props) {
     super(props);
         this.state = {
-            infected: '',
-            id: ''
+            infected: props.location.state? props.location.state.id : '',
+            id: '',
+            popup: 'none',
         };
         
         this.handleChange = this.handleChange.bind(this);
+        this.dismissPopup = this.dismissPopup.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.formValidation = this.formValidation.bind(this);
     }
@@ -22,16 +26,27 @@ class ReportFormContainer extends React.Component {
         });
     }
     
+    dismissPopup() {
+        this.setState({
+            ...this.state,
+            popup: 'none'
+        });
+    }
+    
     formValidation() {
         if(!this.state.infected){
-            window.alert("Invalid infected id.");
-            document.getElementById("infected").focus();
+            this.setState({
+                ...this.state,
+                popup: 'invalid infected'
+            });
             return false;
         }
         
         if(!this.state.id){
-            window.alert("Your Id is incvalid.");
-            document.getElementById("id").focus();
+            this.setState({
+                ...this.state,
+                popup: 'invalid id'
+            });
             return false;
         }
         return true;
@@ -41,21 +56,18 @@ class ReportFormContainer extends React.Component {
         if(this.formValidation()){
             reportInfected(
                 this.state,
-                (succesfull, statusCode) => {
+                (succesfull) => {
                     if(succesfull){
-                        window.alert(
-                            "Thank you for your report!\n" +
-                            "Your report will help our survival.");
-                        this.props.history.push('/');
+                        this.setState({
+                            ...this.state,
+                            popup: 'successful report'
+                        });
                     }
                     else{
-                        window.alert(
-                            "Unable to report!\n" +
-                            "This may be something with the server, or you may "+
-                            "have mistyped one of the Ids.\n" +
-                            "This response came from the server:\n" +
-                            statusCode);
-                        document.getElementById("infected").focus();
+                        this.setState({
+                            ...this.state,
+                            popup: 'failed to report'
+                        });
                     }
                 }
             );
@@ -63,12 +75,19 @@ class ReportFormContainer extends React.Component {
     }
     render() {
         return (
-            <ReportForm 
-                onChangeValue={this.handleChange}
-                onReport={this.handleSubmit}
-            />
+            <div>
+                <ReportAlert 
+                    popup={this.state.popup}
+                    onButtonClick={this.dismissPopup}
+                />
+                <ReportForm 
+                    infectedValue={this.state.infected}
+                    onChangeValue={this.handleChange}
+                    onReport={this.handleSubmit}
+                />
+            </div>
         );
     }
 }
 
-export default ReportFormContainer;
+export default withRouter(ReportFormContainer);
