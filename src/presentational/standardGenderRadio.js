@@ -14,6 +14,7 @@ const GenderRadio =(props) =>{
                     inline
                     value="M"
                     onClick={props.onChangeValue}
+                    checked={props.value === "M"}
                 >
                     Male
                 </Radio>
@@ -25,6 +26,7 @@ const GenderRadio =(props) =>{
                     inline
                     value="F"
                     onClick={props.onChangeValue}
+                    checked={props.value === "F"}
                 >
                     Female
                 </Radio>

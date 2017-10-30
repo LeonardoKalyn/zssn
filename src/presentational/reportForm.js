@@ -26,6 +26,7 @@ const ReportForm =(props) =>{
                     name="Your Id"
                     id="id"
                     text="Your Id"
+                    value={props.id}
                     changeHandler={onChangeValue}
                 />
                 

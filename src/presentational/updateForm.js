@@ -14,7 +14,7 @@ const UpdateForm = (props) => {
                 <CollapsablePanel btTitle="Instructions" btStyle="info">
                     <h4>To update your data fill in the Id field.</h4>
                     <h4>Your saved data will be loaded from the server a few seconds after 
-                    you click the load button. (White button with an arrow facing down.</h4>
+                    you click the load button. (white button with an arrow facing down)</h4>
                 </CollapsablePanel>
                 
                 <FormGroup
@@ -59,6 +59,7 @@ const UpdateForm = (props) => {
                 <GenderRadio 
                     genderValidation={handleValidation.genderValidation()}
                     onChangeValue={onChangeValue}
+                    value={props.newPerson.gender}
                 />
                 
                 <FormGroup

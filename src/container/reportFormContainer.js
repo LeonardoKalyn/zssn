@@ -81,6 +81,7 @@ class ReportFormContainer extends React.Component {
                     onButtonClick={this.dismissPopup}
                 />
                 <ReportForm 
+                    id={this.state.id}
                     infectedValue={this.state.infected}
                     onChangeValue={this.handleChange}
                     onReport={this.handleSubmit}

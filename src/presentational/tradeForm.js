@@ -53,6 +53,7 @@ const TradeForm = (props) => {
                     name="Id"
                     id="id"
                     text="Your id"
+                    value={props.id}
                     changeHandler={onChangeValue}
                 />
                 

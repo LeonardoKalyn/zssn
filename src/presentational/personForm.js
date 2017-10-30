@@ -7,7 +7,7 @@ import ResourceField from './standardResourceField';
 import MapPickerModal from './../container/mapPickerContainer';
 
 const PersonForm = (props) => {
-    const {onChangeValue, handleValidation} = props;
+    const {onChangeValue, handleValidation, person} = props;
     return (
         <div>
             <h1>Sign Up</h1>
@@ -23,6 +23,7 @@ const PersonForm = (props) => {
                     id="name"
                     text="Your full name"
                     changeHandler={onChangeValue}
+                    value={person.name}
                     validationHandler={handleValidation.nameValidation()}
                 />
                 
@@ -31,12 +32,14 @@ const PersonForm = (props) => {
                     id="age"
                     text="Your age"
                     changeHandler={onChangeValue}
+                    value={person.age}
                     validationHandler={handleValidation.ageValidation()}
                 />
                 
                 <GenderRadio 
                     genderValidation={handleValidation.genderValidation()}
                     onChangeValue={onChangeValue}
+                    value={props.person.gender}
                 />
                 
                 <FormGroup

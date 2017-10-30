@@ -11,7 +11,7 @@ class PersonFormContainer extends React.Component {
         this.state = {
             person: {
                 name: '',
-                age: -1,
+                age: '',
                 gender: '',
                 lonlat: '',
             },
@@ -246,6 +246,7 @@ class PersonFormContainer extends React.Component {
                     adicionalData={this.state.adicionalData}
                 />
                 <PersonForm
+                    person={this.state.person}
                     onChangeValue={this.handleChange}
                     onSaveClick={this.handleSaveClick}
                     handleValidation={this.handleValidationState}

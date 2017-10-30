@@ -42,8 +42,7 @@ class TradeFormContainer extends React.Component {
     }
 
     handleChange(event) {
-        const value = event.target.value ? 
-            event.target.value : 0;
+        const value = event.target.value;
         
         const updateResource = (target, resourceName) =>{
             this.setState({
@@ -302,6 +301,7 @@ class TradeFormContainer extends React.Component {
                     dismissPopup={this.dismissPopup}
                 />
                 <TradeForm 
+                    id={this.state.id}
                     name={this.state.consumer.name}
                     onTrade={this.handleSubmit}
                     onChangeValue={this.handleChange}

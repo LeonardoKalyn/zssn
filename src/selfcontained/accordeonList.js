@@ -8,15 +8,10 @@ class SurvivorList extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-              activeKey: '1',
+              survivorList: null,
         };
           
-        this.handleSelect = this.handleSelect.bind(this);
         this.renderItem = this.renderItem.bind(this);
-    }
-
-    handleSelect(activeKey) {
-        this.setState({ activeKey });
     }
   
     componentDidMount(){
