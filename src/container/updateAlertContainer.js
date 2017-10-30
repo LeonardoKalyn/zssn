@@ -67,7 +67,7 @@ class UpdateAlert extends React.Component {
                     title: "Invalid location",
                     text: "The provided location is not valid.",
                     style: "warning",
-                    action: () => document.getElementById("lonlat").focus()
+                    action: () => null
                 });
                 break;
                 

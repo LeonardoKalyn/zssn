@@ -211,19 +211,22 @@ class UpdateFormContainer extends React.Component {
                 this.state.id,
                 (successful, body) => {
                     if(successful){
+                        console.log(body);
+                        let {lonlat} = body;
+                        lonlat = lonlat ? lonlat.replace('POINT (', '').replace(')', '') : '';
                         this.setState({
                             ...this.state,
                             oldPerson:{
                                 name: body.name,
                                 age: body.age,
                                 gender: body.gender,
-                                lonlat: body.lonlat
+                                lonlat: lonlat
                             },
                             newPerson:{
                                 name: body.name,
                                 age: body.age,
                                 gender: body.gender,
-                                lonlat: body.lonlat
+                                lonlat:lonlat
                             }
                         });
                     }
